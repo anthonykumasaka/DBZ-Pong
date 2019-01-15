@@ -1,0 +1,24 @@
+{
+  "name": "tennis-pong",
+  "version": "1.0.0",
+  "description": "![alt text](https://github.com/anthonykumasaka/tennis-pong/blob/master/wireframe_1.png)",
+  "private": true,
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anthonykumasaka/tennis-pong.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anthonykumasaka/tennis-pong/issues"
+  },
+  "homepage": "https://github.com/anthonykumasaka/tennis-pong#readme",
+  "devDependencies": {
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.2.1"
+  }
+}
