@@ -6,11 +6,52 @@
         body {
           background: black; 
         }
+        * {
+          cursor: none;
+        }
+        h1 {
+          color: white; 
+          position: absolute; 
+          left: 750px; 
+          top: 100px; 
+
+        }
+
+        .flex-container {
+          display: flex; 
+          flex-direction: column;
+          justify-content: center;  
+          align-items: center; 
+        }
+
+        audio {
+          
+          position: absolute; 
+          left: 680px; 
+          top: 580px; 
+        }
+
+        p {
+          color: white; 
+          line-height: 25px;
+          font-size: 18px;  
+        }
+
+        .description {
+          width: 600px; 
+          height: 100px; 
+          margin-left: 25px; 
+          margin-top: 110px; 
+        }
     </style>
   </head>
   <body>
-    <div> 
+    <div class="flex-container"> 
+      <div>
+        <h1>DBZ PONG</h1>
+      </div>
    
+   <div>
     <canvas width="640" height="360" id="gameCanvas" 
     style="
     padding-left: 0;
@@ -20,25 +61,22 @@
     margin-right: auto;
     display: block;"></canvas> 
     <script src="main.js"></script>
-
-
     <script>
+
       let canvas; 
       let canvasContext; 
-      let ballX = 0; 
-      let ballY = 225;
+      let ballX = 510; 
+      let ballY = 180;
       let xPos = 25; 
-      let yPos = 100; 
+      let yPos = 150; 
       //let ballSpeedX = 25 ; 
-      let ballSpeedX = 5; 
+      let ballSpeedX = -3; 
       let ballSpeedY = 0; 
 
       let player1Score = 0
       let player2Score = 0
       const WINNING_SCORE = 10
-
       let showingWinScreen = false; 
-
       let paddle1X = 40; 
       let paddle1Y = 250; 
       let paddle2Y = 250; 
@@ -98,25 +136,31 @@
       };
 
       function update() {
+         //startGame(); 
          drawEverything();
          moveEverything(); 
          window.requestAnimationFrame(update);            
       }
+    
+    let newRound = true; 
+
 
     function ballReset() {
       // winning score 
       if (player1Score >= WINNING_SCORE || player2Score >= WINNING_SCORE) {
         showingWinScreen = true; 
       }
+      //xPos = 25; 
+      //yPos = 150; 
 
       ballSpeedX = -ballSpeedX; 
-      ballX = 400
+      ballX = 510
       //ballX = 100;
       ballY = canvas.height/2; 
-      ballY = 125;  
+      //ballY = 180;  
        //ballSpeedX = 12.5; 
-       ballSpeedX = 5; 
-       ballSpeedY = 1; 
+       ballSpeedX = -3; 
+       ballSpeedY = 0; 
      
     }
 
@@ -129,10 +173,10 @@
 
     function computerMovement() {
       let paddle2YCenter = paddle2Y + (PADDLE_HEIGHT/2); 
-      if (paddle2YCenter < ballY - 35) {
-        paddle2Y += 9; 
-      } else if (paddle2YCenter > ballY + 35) {
-        paddle2Y -= 9; 
+      if (paddle2YCenter < ballY - 15) {
+        paddle2Y += 7; 
+      } else if (paddle2YCenter > ballY + 15) {
+        paddle2Y -= 7; 
       }
     }
 
@@ -157,8 +201,9 @@
             ballSpeedX = -ballSpeedX; 
             ballSpeedX += 1; 
 
-            let deltaY = ballY -(paddle1Y+PADDLE_HEIGHT/2);
-            ballSpeedY = deltaY * .05; 
+            let deltaY = ballY - (paddle1Y+PADDLE_HEIGHT/2);
+            //ballSpeedY = deltaY * .08; 
+            ballSpeedY = deltaY * .15; 
 
             if (xPos > 125 && xPos < 275) {
               ballSpeedX += 2; 
@@ -178,11 +223,12 @@
           if (ballY > paddle2Y && 
            ballY < paddle2Y + 100) {
            ballSpeedX = -ballSpeedX; 
-
+          
            let deltaY = ballY -(paddle2Y+PADDLE_HEIGHT/2);
+
            ballSpeedY = deltaY * .15; 
 
-          drawEverything(1) 
+           drawEverything(1) 
           
         } else {
           player1Score++; 
@@ -217,11 +263,14 @@
           canvasContext.fillStyle = 'white'
 
           if (player1Score >= WINNING_SCORE) {
-            canvasContext.fillText("Player 1 Wins", 240, 180)
+            canvasContext.fillText("Teen Gohan Wins", 240, 180)
+            //context.fillText("Smooth shadow", 90, 160)
             canvasContext.font = 'bold 24px courier'
+           
 
           } else if (player2Score >= WINNING_SCORE) {
-            canvasContext.fillText("Player 2 wins", 240, 180) 
+            canvasContext.fillText("Majin Buu Wins", 240, 180) 
+            //context.fillText("Smooth shadow", 90, 160)
             canvasContext.font = 'bold 24px courier'
 
           }
@@ -235,11 +284,10 @@
         //colorRect(0, paddle1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'black')
 
         //next line is right paddle 
-        colorRect(canvas.width - PADDLE_THICKNESS, paddle2Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'black')
+        colorRect(canvas.width - PADDLE_THICKNESS, paddle2Y - 10, PADDLE_THICKNESS, 85, 'black')
 
         //colorRect(xPos, yPos, 40, 40, 'darkgreen')
         // player sprites 
-
         if (boolean === false) {
           let player1 = document.getElementById('player1move')
           canvasContext.drawImage(player1, xPos, yPos, 154, 47)
@@ -266,8 +314,12 @@
         //let player2 = document.getElementById('player2')
         //canvasContext.drawImage(player2, 900, 200, 50, 50)
 
-        canvasContext.fillText(player1Score, 100, 100)
-        canvasContext.fillText(player2Score, canvas.width - 100, 100)
+        canvasContext.fillText(player1Score, 100, 300)
+        canvasContext.font = 'bold 24px courier'
+
+        canvasContext.fillText(player2Score, canvas.width - 100, 300)
+        canvasContext.font = 'bold 24px courier'
+
 
         //window.requestAnimationFrame(drawEverything)
     }
@@ -282,7 +334,6 @@
           xPos += 50; 
           //drawEverything(false)
         }
-
       }
       if (e.keyCode === 37) {
         xPos -= 50; 
@@ -309,15 +360,24 @@
 
     function colorRect(leftX, topY, width, height, drawColor) {
       canvasContext.fillStyle = "rgba(0, 0, 200, 0)";
+      //canvasContext.fillStyle = "black";
       canvasContext.fillRect(leftX, topY, width, height); 
     }
 
    //window.requestAnimationFrame(moveEverything); 
       //window.requestAnimationFrame(move); 
-
-    
-
     </script>
+
+    <audio id="audio" src="zh.mp4" controls autoplay>
+        <source src="naruto.mp3" type="audio/mp3">
+    </audio>
+    <div class="description">
+      <p>
+        DBZ Pong is based off the classic pong game. However, unlike the original, the user can move forward and backward increasing the
+        speed of the ball. Use a mouse or trackpad to control your character. First to 10 wins! 
+      </p> 
+    
+    </div>
 
     <img src="images/dbz2.png" id="player1" width=0px>
     
@@ -328,5 +388,6 @@
     <img src="images/bg.jpg" width=0px  id="bg" script="color: ">
     <div style="background-color: black;" width: 1000px; ></div>
     </div> 
+    </div>
   </body>
 </html>
