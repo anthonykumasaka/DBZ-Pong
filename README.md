@@ -1,4 +1,5 @@
 # DBZ Pong
+![alt text](https://github.com/anthonykumasaka/tennis-pong/blob/master/images/pong.gif)
 ![alt text](https://github.com/anthonykumasaka/tennis-pong/blob/master/images/dbzpong2.png)
 
 ## Overview
