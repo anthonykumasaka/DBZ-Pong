@@ -1,7 +1,7 @@
 # DBZ Pong
 ![alt text](https://github.com/anthonykumasaka/tennis-pong/blob/master/images/dbzpong2.png)
 
-[DBZ PONG LIVE DEMO](https://kumaflix.herokuapp.com/#/login)
+[DBZ PONG LIVE DEMO](https://anthonykumasaka.github.io/tennis-pong/)
 ## Overview
 DBZ Pong is based off the classic game pong. However, unlike pong, users will be able to move not just up and down but forward and backward as well. The velocity of the ball will be relative to the distance their sprite character is to the ball. The closer they are the faster the ball will be returned. Exaclty like pong the user wants to return a ball that cant be returned back. The game is over when the user wins 10 games. 
 
