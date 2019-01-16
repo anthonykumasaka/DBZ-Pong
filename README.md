@@ -1,4 +1,4 @@
-# KUMA Tennis
+# DBZ Pong
 ![alt text](https://github.com/anthonykumasaka/tennis-pong/blob/master/images/dbzpong2.png)
 
 ## Overview
