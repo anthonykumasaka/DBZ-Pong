@@ -3,12 +3,15 @@
   <head>
     <title>Tennis</title>
     <style>
-
+        body {
+          background: black; 
+        }
     </style>
   </head>
   <body>
+    <div> 
    
-    <canvas width="960" height="540" id="gameCanvas" 
+    <canvas width="640" height="360" id="gameCanvas" 
     style="
     padding-left: 0;
     padding-right: 0;
@@ -20,21 +23,19 @@
 
 
     <script>
-    
-      
       let canvas; 
       let canvasContext; 
-      let ballX = 500; 
+      let ballX = 0; 
       let ballY = 225;
       let xPos = 25; 
-      let yPos = 30; 
+      let yPos = 100; 
       //let ballSpeedX = 25 ; 
-      let ballSpeedX = 25; 
+      let ballSpeedX = 5; 
       let ballSpeedY = 0; 
 
       let player1Score = 0
       let player2Score = 0
-      const WINNING_SCORE = 60
+      const WINNING_SCORE = 10
 
       let showingWinScreen = false; 
 
@@ -44,18 +45,29 @@
       const PADDLE_THICKNESS = 10; 
       const PADDLE1_HEIGHT = 45; 
       //const PADDLE1_HEIGHT = 100; 
-      const PADDLE_HEIGHT = 100; 
+      const PADDLE_HEIGHT = 50; 
       //const PADDLE_HEIGHT = 50; 
 
+      
+
       function calculateMousePos(evt) {
-        let rect = canvas.getBoundingClientRect();
-        let root = document.documentElement; 
-        let mouseX = evt.clientX - rect.left - root.scrollLeft; 
-        let mouseY = evt.clientY - rect.top - root.scrollTop; 
-        return {
-          x:mouseX, 
-          y:mouseY 
-        }
+            let rect = canvas.getBoundingClientRect();
+            let root = document.documentElement; 
+            let mouseX = evt.clientX - rect.left - root.scrollLeft; 
+            let mouseY = evt.clientY - rect.top - root.scrollTop; 
+
+            if (xPos === 200) {
+              //xPos = mouseX
+              xPos = 199;               
+            } else {
+              xPos = mouseX
+            }
+            
+            yPos = mouseY
+            return {
+              x:mouseX, 
+              y:mouseY 
+            }
 
       } 
 
@@ -73,46 +85,47 @@
         canvas = document.getElementById('gameCanvas'); 
         canvasContext = canvas.getContext('2d'); 
 
-        let framesPerSecond = 30; 
-        setInterval(function() {
-          moveEverything(); 
-          drawEverything(); 
-        }, 1000/framesPerSecond)
-
-        canvas.addEventListener('mousedown', handleMouseClick)
-
-        canvas.addEventListener('mousemove', 
+        //{% comment %} //let framesPerSecond = 30;  {% endcomment %}
+        //{% comment %} //setInterval(update, 1000/framesPerSecond) {% endcomment %}
+          canvas.addEventListener('mousemove', 
           function(evt) {
             let mousePos = calculateMousePos(evt); 
             paddle1Y = mousePos.y - (PADDLE_HEIGHT/2);
-            
-            
           }
         ) 
+        window.requestAnimationFrame(update); 
+        canvas.addEventListener('mousedown', handleMouseClick)
       };
+
+      function update() {
+         drawEverything();
+         moveEverything(); 
+         window.requestAnimationFrame(update);            
+      }
 
     function ballReset() {
       // winning score 
       if (player1Score >= WINNING_SCORE || player2Score >= WINNING_SCORE) {
         showingWinScreen = true; 
       }
-      xPos = 25; 
-      yPos = 30; 
 
       ballSpeedX = -ballSpeedX; 
       ballX = 400
       //ballX = 100;
       ballY = canvas.height/2; 
-      //ballY = 125;  
-       ballSpeedX = 25; 
-       ballSpeedY = 5; 
-      sleep(2); 
+      ballY = 125;  
+       //ballSpeedX = 12.5; 
+       ballSpeedX = 5; 
+       ballSpeedY = 1; 
+     
     }
 
     function callBoth() {
-      moveEverything(); 
       drawEverything(); 
+      moveEverything();  
     }
+     
+
 
     function computerMovement() {
       let paddle2YCenter = paddle2Y + (PADDLE_HEIGHT/2); 
@@ -122,8 +135,6 @@
         paddle2Y -= 9; 
       }
     }
-
- 
 
     function moveEverything() {
       if (showingWinScreen) {
@@ -135,27 +146,44 @@
       ballX += ballSpeedX; 
       ballY += ballSpeedY; 
 
-      if (ballX === xPos + 75) {
+      if (ballX < 0) {
+        player2Score++; 
+        ballSpeedX = -ballSpeedX; 
+
+      }
+
+      if (ballX < xPos + 40 && ballX > xPos ) {
         if (ballY > yPos && ballY < yPos + PADDLE_HEIGHT) {
             ballSpeedX = -ballSpeedX; 
+            ballSpeedX += 1; 
 
             let deltaY = ballY -(paddle1Y+PADDLE_HEIGHT/2);
             ballSpeedY = deltaY * .05; 
+
+            if (xPos > 125 && xPos < 275) {
+              ballSpeedX += 2; 
+            } 
+
+            if (xPos > 275) {
+              ballSpeedX += 4; 
+            }
+            drawEverything(false) 
         }
       } else if (ballX < 0) {
         player2Score++; //must be before ball reset 
           ballReset();
       }
-      
-
-      
+    
       if (ballX > canvas.width - 100) {
           if (ballY > paddle2Y && 
-           ballY < paddle2Y + PADDLE_HEIGHT) {
+           ballY < paddle2Y + 100) {
            ballSpeedX = -ballSpeedX; 
 
            let deltaY = ballY -(paddle2Y+PADDLE_HEIGHT/2);
-           ballSpeedY = deltaY * .35; 
+           ballSpeedY = deltaY * .15; 
+
+          drawEverything(1) 
+          
         } else {
           player1Score++; 
           ballReset(); 
@@ -169,6 +197,7 @@
         ballSpeedY = -ballSpeedY; 
       }
       
+      //window.requestAnimationFrame(moveEverything); 
     }
 
     function drawNet() {
@@ -177,56 +206,83 @@
       }
     }
 
-    function drawEverything() {
+    function drawEverything(boolean) {
          //next line creates court
-        colorRect(0, 0, canvas.width, canvas.height, 'black')
+        colorRect(0, 0, canvas.width, canvas.height, "black")
 
-        //let court = document.getElementById('court')
-        //canvasContext.drawImage(court, 0, 0, 960, 540)
-
+        let bg = document.getElementById('bg')
+        canvasContext.drawImage(bg, 0, 0, 960, 540)
 
         if (showingWinScreen) {
           canvasContext.fillStyle = 'white'
 
           if (player1Score >= WINNING_SCORE) {
-            canvasContext.fillText("Player 1 Wins", 350, 200)
+            canvasContext.fillText("Player 1 Wins", 240, 180)
+            canvasContext.font = 'bold 24px courier'
 
           } else if (player2Score >= WINNING_SCORE) {
-            canvasContext.fillText("Player 2 wins", 350, 200) 
+            canvasContext.fillText("Player 2 wins", 240, 180) 
+            canvasContext.font = 'bold 24px courier'
+
           }
           canvasContext.fillText("Click to Continue", 350, 00)
           return; 
         }
-        drawNet()
+        //drawNet()
 
         //next line is left paddle 
         colorRect(xPos, yPos, PADDLE_THICKNESS, PADDLE_HEIGHT, 'black')
-        //colorRect(0, paddle1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'white')
+        //colorRect(0, paddle1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'black')
 
         //next line is right paddle 
         colorRect(canvas.width - PADDLE_THICKNESS, paddle2Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'black')
 
         //colorRect(xPos, yPos, 40, 40, 'darkgreen')
         // player sprites 
-        let player1 = document.getElementById('player1')
-        canvasContext.drawImage(player1, xPos, yPos, 75, 75)
-        let player2 = document.getElementById('player2')
-        canvasContext.drawImage(player2, canvas.width - 100, paddle2Y, 100, 100)
+
+        if (boolean === false) {
+          let player1 = document.getElementById('player1move')
+          canvasContext.drawImage(player1, xPos, yPos, 154, 47)
+        } else {
+          let player1 = document.getElementById('player1')
+          canvasContext.drawImage(player1, xPos, yPos, 36, 46)
+        }
+
+        if (boolean === 1) {
+          let player2 = document.getElementById('player2move')
+          canvasContext.drawImage(player2, canvas.width - 100, paddle2Y, 154, 47)
+        } else {
+          let player2 = document.getElementById('player2')
+          canvasContext.drawImage(player2, canvas.width - 100, paddle2Y, 78, 78)
+        
+        }
+
+        //let player2 = document.getElementById('player2')
+        //canvasContext.drawImage(player2, canvas.width - 100, paddle2Y, 42, 48)
         //canvasContext.drawImage(player2, canvas.width - PADDLE_THICKNESS, paddle2Y, PADDLE_THICKNESS, PADDLE_HEIGHT)
         //next line is the ball 
-        colorCircle(ballX, ballY, 10, 'white')
+        colorCircle(ballX, ballY, 7, 'white')
 
         //let player2 = document.getElementById('player2')
         //canvasContext.drawImage(player2, 900, 200, 50, 50)
 
-        canvasContext.fillText(player1Score, 100, 400)
+        canvasContext.fillText(player1Score, 100, 100)
         canvasContext.fillText(player2Score, canvas.width - 100, 100)
+
+        //window.requestAnimationFrame(drawEverything)
     }
+
+        //window.requestAnimationFrame(drawEverything)
+
 
     function move(e) {
       //alert.(e.keyCode); 
-      if (e.keyCode === 39) {
-        xPos += 50; 
+      if (xPos < 200) {
+        if (e.keyCode === 39) {
+          xPos += 50; 
+          //drawEverything(false)
+        }
+
       }
       if (e.keyCode === 37) {
         xPos -= 50; 
@@ -237,10 +293,9 @@
       if (e.keyCode === 40) {
         yPos += 50
       }
-         if (e.keyCode === 39 && e.keyCode === 40) {
-        xPos += 50;
-        yPos += 25;  
-      }
+         
+      //window.requestAnimationFrame(move); 
+
     }
     
     document.onkeydown = move; 
@@ -253,19 +308,25 @@
     }
 
     function colorRect(leftX, topY, width, height, drawColor) {
-      canvasContext.fillStyle = drawColor;
+      canvasContext.fillStyle = "rgba(0, 0, 200, 0)";
       canvasContext.fillRect(leftX, topY, width, height); 
     }
 
-    
+   //window.requestAnimationFrame(moveEverything); 
+      //window.requestAnimationFrame(move); 
+
     
 
     </script>
 
-    <img src="images/hitting.png" id="player1" width=0px>
-    <img src="images/hitting.png" id="player1" width=0px>
-    <img src="images/bowser_tennis_at_net.gif" id="player2" width=0px>
-    <img src="images/tennis_court_wire_frame_thicker_lines.jpg" width=0px  id="court">
+    <img src="images/dbz2.png" id="player1" width=0px>
     
+    <img src="images/majin1.gif" id="player2" width=0px>
+    <img src="images/dbz3.png" id="player1move" width=0px>
+    <img src="images/dbz33.png" id="player2move" width=0px>
+    <img src="images/tennis_court_wire_frame_thicker_lines.jpg" width=0px  id="court">
+    <img src="images/bg.jpg" width=0px  id="bg" script="color: ">
+    <div style="background-color: black;" width: 1000px; ></div>
+    </div> 
   </body>
 </html>
