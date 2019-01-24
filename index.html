@@ -6,6 +6,7 @@
         body {
           background: black; 
         }
+
         * {
           cursor: none;
         }
@@ -14,7 +15,6 @@
           position: absolute; 
           left: 750px; 
           top: 100px; 
-
         }
 
         .flex-container {
@@ -62,7 +62,6 @@
     display: block;"></canvas> 
     <script src="main.js"></script>
     <script>
-
       let canvas; 
       let canvasContext; 
       let ballX = 510; 
@@ -85,8 +84,7 @@
       //const PADDLE1_HEIGHT = 100; 
       const PADDLE_HEIGHT = 50; 
       //const PADDLE_HEIGHT = 50; 
-
-      
+      var audio = new Audio("zh.mp4")
 
       function calculateMousePos(evt) {
             let rect = canvas.getBoundingClientRect();
@@ -135,6 +133,8 @@
         canvas.addEventListener('mousedown', handleMouseClick)
       };
 
+      audio.play();
+      
       function update() {
          //startGame(); 
          drawEverything();
