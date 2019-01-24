@@ -84,7 +84,13 @@
       //const PADDLE1_HEIGHT = 100; 
       const PADDLE_HEIGHT = 50; 
       //const PADDLE_HEIGHT = 50; 
-      var audio = new Audio("zh.mp4")
+      var audio = new Audio("naruto3.mp3")
+
+      document.addEventListener('mousemove', function(e) {
+        
+          audio.play(); 
+        
+      })
 
       function calculateMousePos(evt) {
             let rect = canvas.getBoundingClientRect();
@@ -118,6 +124,8 @@
       }
 
       window.onload = function() {
+      audio.play();
+
         canvas = document.getElementById('gameCanvas'); 
         canvasContext = canvas.getContext('2d'); 
 
@@ -133,8 +141,6 @@
         canvas.addEventListener('mousedown', handleMouseClick)
       };
 
-      audio.play();
-      
       function update() {
          //startGame(); 
          drawEverything();
@@ -368,9 +374,7 @@
       //window.requestAnimationFrame(move); 
     </script>
 
-    <audio id="audio" src="zh.mp4" controls autoplay>
-        <source src="naruto.mp3" type="audio/mp3">
-    </audio>
+ 
     <div class="description">
       <p>
         DBZ Pong is based off the classic pong game. However, unlike the original, the user can move forward and backward increasing the
