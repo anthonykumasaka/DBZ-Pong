@@ -71,7 +71,6 @@
       //let ballSpeedX = 25 ; 
       let ballSpeedX = -3; 
       let ballSpeedY = 0; 
-
       let player1Score = 0
       let player2Score = 0
       const WINNING_SCORE = 10
@@ -87,9 +86,7 @@
       var audio = new Audio("naruto3.mp3")
 
       document.addEventListener('mousemove', function(e) {
-        
           audio.play(); 
-        
       })
 
       function calculateMousePos(evt) {
@@ -156,15 +153,9 @@
       if (player1Score >= WINNING_SCORE || player2Score >= WINNING_SCORE) {
         showingWinScreen = true; 
       }
-      //xPos = 25; 
-      //yPos = 150; 
-
       ballSpeedX = -ballSpeedX; 
       ballX = 510
-      //ballX = 100;
       ballY = canvas.height/2; 
-      //ballY = 180;  
-       //ballSpeedX = 12.5; 
        ballSpeedX = -3; 
        ballSpeedY = 0; 
      
@@ -175,8 +166,6 @@
       moveEverything();  
     }
      
-
-
     function computerMovement() {
       let paddle2YCenter = paddle2Y + (PADDLE_HEIGHT/2); 
       if (paddle2YCenter < ballY - 15) {
@@ -190,9 +179,7 @@
       if (showingWinScreen) {
         return; 
       }
-
       computerMovement(); 
-
       ballX += ballSpeedX; 
       ballY += ballSpeedY; 
 
@@ -236,7 +223,7 @@
 
            drawEverything(1) 
           
-        } else {
+        } else if (ballX > canvas.width) {
           player1Score++; 
           ballReset(); 
         }
