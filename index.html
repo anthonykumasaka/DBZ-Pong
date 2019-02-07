@@ -1,23 +1,27 @@
 <!doctype html>
 <html>
   <head>
-    <title>Tennis</title>
+    <title>DBZ PONG</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="icon" type="image/png" href="images/MON_2019_v2.png" />
 
     <style>
         body {
-          background: grey; 
+          background: #141414; 
         }
 
         * {
-          /* cursor: none; */
+         
         }
         h1 {
           color: white; 
-          position: absolute; 
-          left: 750px; 
-          top: 100px; 
         }
+
+        .fa-facebook, .fa-instagram, .fa-twitter, .fa-github, .fa-youtube, .fa-linkedin {
+        font-size: 1.5em; 
+         color: white; 
+        padding: 0px 0px 0px 15px; 
+}
 
         .flex-container {
           display: flex; 
@@ -40,10 +44,9 @@
         }
 
         .description {
-          width: 600px; 
+          width: 1024px; 
           height: 100px; 
-          margin-left: 25px; 
-          margin-top: 110px; 
+         
         }
     </style>
   </head>
@@ -55,28 +58,29 @@
    
    <div>
      <!-- 640 360 -->
-    <canvas width="1280" height="720" id="gameCanvas" 
+    <canvas width="1024" height="576" id="gameCanvas" 
     style="
+    cursor: none; 
     padding-left: 0;
     padding-right: 0;
-    margin-top: 180px; 
+    margin-top: 0px; 
     margin-left: auto;
     margin-right: auto;
-    display: block;"></canvas> 
+    display: fixed;"></canvas> 
     <script src="main.js"></script>
     <script>
       let canvas; 
       let canvasContext; 
       let ballX = 510; 
-      let ballY = 180;
+      let ballY = 288;
       let xPos = 25; 
-      let yPos = 150; 
+      let yPos = 270; 
       //let ballSpeedX = 25 ; 
       let ballSpeedX = -3; 
       let ballSpeedY = 0; 
       let player1Score = 0
       let player2Score = 0
-      const WINNING_SCORE = 10
+      const WINNING_SCORE = 3
       let showingWinScreen = false; 
       let paddle1X = 40; 
       let paddle1Y = 250; 
@@ -86,11 +90,22 @@
       //const PADDLE1_HEIGHT = 100; 
       const PADDLE_HEIGHT = 50; 
       //const PADDLE_HEIGHT = 50; 
-      var audio = new Audio("naruto3.mp3")
+      var mysound = new Audio("naruto3.mp3")
+      let pressed = false 
 
-      document.addEventListener('mousemove', function(e) {
-          audio.play(); 
-      })
+    document.addEventListener('keydown', function (event) {
+   
+    if (event.keyCode === 80 && pressed === false) {
+        pressed = true 
+        mysound.volume = 0.5
+        mysound.play()
+ 
+    } else if (event.keyCode === 80 && pressed === true) {
+        pressed = false 
+        mysound.pause()
+    }
+}, false);
+
 
       function calculateMousePos(evt) {
             let rect = canvas.getBoundingClientRect();
@@ -124,7 +139,7 @@
       }
 
       window.onload = function() {
-      audio.play();
+     
 
         canvas = document.getElementById('gameCanvas'); 
         canvasContext = canvas.getContext('2d'); 
@@ -172,9 +187,9 @@
     function computerMovement() {
       let paddle2YCenter = paddle2Y + (PADDLE_HEIGHT/2); 
       if (paddle2YCenter < ballY - 15) {
-        paddle2Y += 7; 
+        paddle2Y += 6.5; 
       } else if (paddle2YCenter > ballY + 15) {
-        paddle2Y -= 7; 
+        paddle2Y -= 6.5; 
       }
     }
 
@@ -186,27 +201,23 @@
       ballX += ballSpeedX; 
       ballY += ballSpeedY; 
 
-      if (ballX < 0) {
-        player2Score++; 
-        ballSpeedX = -ballSpeedX; 
 
-      }
 
       if (ballX < xPos + 40 && ballX > xPos ) {
         if (ballY > yPos && ballY < yPos + PADDLE_HEIGHT) {
             ballSpeedX = -ballSpeedX; 
-            ballSpeedX += 1; 
+            ballSpeedX += .5; 
 
             let deltaY = ballY - (paddle1Y+PADDLE_HEIGHT/2);
             //ballSpeedY = deltaY * .08; 
             ballSpeedY = deltaY * .15; 
 
             if (xPos > 125 && xPos < 275) {
-              ballSpeedX += 2; 
+              ballSpeedX += .5; 
             } 
 
             if (xPos > 275) {
-              ballSpeedX += 4; 
+              ballSpeedX += 1; 
             }
             drawEverything(false) 
         }
@@ -253,21 +264,21 @@
         colorRect(0, 0, canvas.width, canvas.height, "black")
 
         let bg = document.getElementById('bg')
-        canvasContext.drawImage(bg, 0, 0, 1280, 720)
+        canvasContext.drawImage(bg, 0, 0, 1024, 576)
 
         if (showingWinScreen) {
           canvasContext.fillStyle = 'white'
 
           if (player1Score >= WINNING_SCORE) {
-            canvasContext.fillText("Teen Gohan Wins", 240, 180)
+            canvasContext.fillText("Teen Gohan Wins", 360, 250)
             //context.fillText("Smooth shadow", 90, 160)
-            canvasContext.font = 'bold 24px courier'
+            canvasContext.font = 'bold 36px courier'
            
 
           } else if (player2Score >= WINNING_SCORE) {
-            canvasContext.fillText("Majin Buu Wins", 240, 180) 
+            canvasContext.fillText("Majin Buu Wins", 360, 250) 
             //context.fillText("Smooth shadow", 90, 160)
-            canvasContext.font = 'bold 24px courier'
+            canvasContext.font = 'bold 36px courier'
 
           }
           canvasContext.fillText("Click to Continue", 350, 00)
@@ -310,11 +321,16 @@
         //let player2 = document.getElementById('player2')
         //canvasContext.drawImage(player2, 900, 200, 50, 50)
 
-        canvasContext.fillText(player1Score, 100, 300)
-        canvasContext.font = 'bold 24px courier'
+        canvasContext.fillText(player1Score, 100, 500)
+         canvasContext.shadowColor = 'lightblue';
+ canvasContext.shadowBlur = 4;
+ canvasContext.shadowOffsetX = 1;
+ canvasContext.shadowOffsetX = -3;
+ canvasContext.shadowOffsetY = 1;
+        canvasContext.font = 'bold 36px courier'
 
-        canvasContext.fillText(player2Score, canvas.width - 100, 300)
-        canvasContext.font = 'bold 24px courier'
+        canvasContext.fillText(player2Score, canvas.width - 100, 500)
+        canvasContext.font = 'black bold 36px courier'
 
 
         //window.requestAnimationFrame(drawEverything)
@@ -355,6 +371,7 @@
     }
 
     function colorRect(leftX, topY, width, height, drawColor) {
+      //make paddles visible below
       canvasContext.fillStyle = "rgba(0, 0, 200, 0)";
       //canvasContext.fillStyle = "black";
       canvasContext.fillRect(leftX, topY, width, height); 
@@ -368,9 +385,12 @@
     <div class="description">
       <p>
         DBZ Pong is based off the classic pong game. However, unlike the original, the user can move forward and backward increasing the
-        speed of the ball. Use a mouse or trackpad to control your character. First to 10 wins! DFAFAFAFAf. 
+        speed of the ball. Use a mouse or trackpad to control your character. First to 10 wins! Press 'P' to Play music and 'P' again to Pause music. 
       </p> 
-    
+      <p>
+        Developed by:  <a href="https://www.anthonykumasaka.com/" style="color: lightgrey;">Anthony Kumasaka</a><a href="https://github.com/anthonykumasaka"><i class="fab fa-github"></i></a><a href="https://www.linkedin.com/in/kumasaka/"><i class="fab fa-linkedin"></i></a>
+
+      </p>
     </div>
 
     <img src="images/dbz2.png" id="player1" width=0px>
@@ -379,7 +399,7 @@
     <img src="images/dbz3.png" id="player1move" width=0px>
     <img src="images/dbz33.png" id="player2move" width=0px>
     <img src="images/tennis_court_wire_frame_thicker_lines.jpg" width=0px  id="court">
-    <img src="images/bg2.jpg" width=0px  id="bg" script="color: ">
+    <img src="images/bg3.jpg" width=0px  id="bg" script="color: ">
     <!-- <div style="background-color: black;" width: 1000px; ></div> -->
     </div> 
     </div>
