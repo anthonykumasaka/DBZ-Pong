@@ -6,11 +6,11 @@
 
     <style>
         body {
-          background: black; 
+          background: grey; 
         }
 
         * {
-          cursor: none;
+          /* cursor: none; */
         }
         h1 {
           color: white; 
@@ -54,7 +54,8 @@
       </div>
    
    <div>
-    <canvas width="640" height="360" id="gameCanvas" 
+     <!-- 640 360 -->
+    <canvas width="1280" height="720" id="gameCanvas" 
     style="
     padding-left: 0;
     padding-right: 0;
@@ -252,7 +253,7 @@
         colorRect(0, 0, canvas.width, canvas.height, "black")
 
         let bg = document.getElementById('bg')
-        canvasContext.drawImage(bg, 0, 0, 960, 540)
+        canvasContext.drawImage(bg, 0, 0, 1280, 720)
 
         if (showingWinScreen) {
           canvasContext.fillStyle = 'white'
@@ -378,8 +379,8 @@
     <img src="images/dbz3.png" id="player1move" width=0px>
     <img src="images/dbz33.png" id="player2move" width=0px>
     <img src="images/tennis_court_wire_frame_thicker_lines.jpg" width=0px  id="court">
-    <img src="images/bg.jpg" width=0px  id="bg" script="color: ">
-    <div style="background-color: black;" width: 1000px; ></div>
+    <img src="images/bg2.jpg" width=0px  id="bg" script="color: ">
+    <!-- <div style="background-color: black;" width: 1000px; ></div> -->
     </div> 
     </div>
   </body>
