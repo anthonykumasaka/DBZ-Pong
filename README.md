@@ -1,5 +1,5 @@
 # DBZ Pong
-![alt text](https://github.com/anthonykumasaka/tennis-pong/blob/master/images/dbz-github)
+![alt text](https://github.com/anthonykumasaka/DBZ-Pong/blob/master/images/dbz-github.png)
 
 [DBZ PONG LIVE DEMO](https://anthonykumasaka.github.io/DBZ-Pong/)
 ## Overview
